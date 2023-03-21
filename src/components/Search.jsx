@@ -18,9 +18,9 @@ export default function Search({ setSearchValue }) {
 
   return (
     <input
-      className="w-50 form-control ms-auto"
+      className="form-control"
       type="search"
-      placeholder="Search"
+      placeholder="Search by title..."
       value={inputValue}
       onChange={handleInputChange}
       aria-label="Search"

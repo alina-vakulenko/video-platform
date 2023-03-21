@@ -9,10 +9,9 @@
 
   .courses-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 500px));
-    column-gap: 60px;
-    row-gap: 60px;
-    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 500px));
+    justify-content: space-evenly;
+    row-gap: 50px;
     margin-bottom: 50px;
 
     .card-img-wrapper {

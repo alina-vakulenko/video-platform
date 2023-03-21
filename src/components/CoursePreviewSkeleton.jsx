@@ -1,20 +1,19 @@
 import React from "react";
 import ContentLoader from "react-content-loader";
 
-export default function CoursePreviewSkeleton(props) {
+export default function CoursePreviewSkeleton() {
   return (
     <ContentLoader
-      className="card"
+      className="card w-100"
       speed={2}
-      width={360}
-      height={600}
-      viewBox="0 0 360 600"
+      width={350}
+      height={550}
+      viewBox="0 0 350 550"
       backgroundColor="#ecebeb"
       foregroundColor="#ecebeb"
-      {...props}
     >
       {/* --- Image --------------------------------------------- */}
-      <rect x="0" y="0" rx="5" ry="5" width="360" height="240" />
+      <rect x="0" y="0" rx="5" ry="5" width="100%" height="250" />
       {/* --- Title --------------------------------------------- */}
       <rect x="10" y="265" rx="5" ry="5" width="250" height="30" />
       {/* --- Lessons and Rating -------------------------------- */}
@@ -29,7 +28,7 @@ export default function CoursePreviewSkeleton(props) {
       <rect x="50" y="465" rx="5" ry="5" width="250" height="20" />
       <rect x="10" y="465" rx="5" ry="5" width="30" height="20" />
       {/* --- Button --------------------------------------------- */}
-      <rect x="205" y="550" rx="5" ry="5" width="144" height="38" />
+      <rect x="210" y="550" rx="5" ry="5" width="144" height="35" />
     </ContentLoader>
   );
 }

@@ -44,8 +44,12 @@ export default function CoursesListPage() {
   return (
     <div className="content">
       <section>
-        <Search setSearchValue={setSearchValue} />
-        <h1 className="mb-3">Find your next course</h1>
+        <div className="row align-items-center mb-5">
+          <h1 className="col-12 col-md-8">Find your next course</h1>
+          <div className="col-12 col-md-4">
+            <Search setSearchValue={setSearchValue} />
+          </div>
+        </div>
         <div className="courses-cards">
           {status === STATUS.PENDING
             ? [...Array(10)].map((_, index) => (
