@@ -14,23 +14,25 @@ export default function FloatingVideo({
   const videoRef = useRef();
   const [error, setError] = useState("");
 
-  const captureVideoPosition = (lessonId, time) => () => {
-    localStorage.setItem(lessonId, JSON.stringify({ currentPosition: time }));
-  };
-
-  const handlePlaying = (event) => {
-    event.target.onloadstart = captureVideoPosition(
-      lessonId,
-      event.target.currentTime
-    );
-    event.target.onpause = captureVideoPosition(
-      lessonId,
-      event.target.currentTime
-    );
-    window.onunload = captureVideoPosition(lessonId, event.target.currentTime);
-  };
-
   useEffect(() => {
+    const captureVideoPosition = (lessonId, time) => () => {
+      localStorage.setItem(lessonId, JSON.stringify({ currentPosition: time }));
+    };
+
+    const handlePlaying = (event) => {
+      event.target.onloadstart = captureVideoPosition(
+        lessonId,
+        event.target.currentTime
+      );
+      event.target.onpause = captureVideoPosition(
+        lessonId,
+        event.target.currentTime
+      );
+      window.onunload = captureVideoPosition(
+        lessonId,
+        event.target.currentTime
+      );
+    };
     const video = videoRef.current;
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = videoUrl;
@@ -53,7 +55,7 @@ export default function FloatingVideo({
       window.removeEventListener("keydown", controlVideoSpeed(video));
       video.removeEventListener("playing", handlePlaying);
     };
-  }, [videoUrl, startPosition]);
+  }, [videoUrl, startPosition, lessonId]);
 
   return (
     <>

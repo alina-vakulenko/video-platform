@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 export default function Search({ setSearchValue }) {
   const [inputValue, setInputValue] = useState("");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateSearchValue = useCallback(
     debounce((value) => {
       setSearchValue(value);
