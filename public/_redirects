@@ -1,2 +1,2 @@
-api/* http://api.wisey.app/ 200
+api/* http://api.wisey.app/:splat 200
 /* /index.html 200
