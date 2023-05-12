@@ -16,7 +16,7 @@ export default function CoursesListPage() {
   const dispatch = useDispatch();
   const { items, status } = useSelector(selectCourses);
 
-  const [searchValue, setSearchValue] = useState(""); //updated with a lag
+  const [searchValue, setSearchValue] = useState("");
 
   const searchedItems = useMemo(() => {
     if (searchValue) {
