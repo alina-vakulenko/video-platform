@@ -13,6 +13,7 @@ export const fetchCourses = createAsyncThunk(
       params: {
         ...params,
       },
+      referrerPolicy: "unsafe_url",
     });
 
     if (response.data.courses) {
