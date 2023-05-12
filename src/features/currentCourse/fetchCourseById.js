@@ -10,7 +10,6 @@ export const fetchCourseById = createAsyncThunk(
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
-      referrerPolicy: "unsafe_url",
     });
 
     if (response.data) {

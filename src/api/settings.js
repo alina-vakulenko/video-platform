@@ -10,7 +10,6 @@ export const getToken = async () => {
   try {
     const res = await httpClient.get("auth/anonymous", {
       params: { platform: "subscriptions" },
-      referrerPolicy: "unsafe_url",
     });
     return res.data.token;
   } catch (error) {
