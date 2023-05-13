@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router";
 
-import Layout from "../components/Layout";
-import CoursesListPage from "../pages/CoursesListPage";
-import CourseItemPage from "../pages/CourseItemPage";
-import NotFoundPage from "../pages/NotFoundPage";
+import Layout from "./components/Layout";
+import CoursesListPage from "./pages/CoursesListPage";
+import CourseItemPage from "./pages/CourseItemPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
-import "../scss/app.scss";
+import "./scss/app.scss";
 
 function App() {
   return (

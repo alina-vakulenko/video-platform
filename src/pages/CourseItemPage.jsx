@@ -1,26 +1,20 @@
-import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-
-import { fetchCourseById } from "../features/currentCourse/fetchCourseById";
-import { selectCurrentCourse } from "../features/currentCourse/currentCourseSlice";
 
 import CourseDetails from "../components/CourseDetails";
 import ErrorPage from "./ErrorPage";
 
-import { STATUS } from "../utils/fetchStatus";
+import { useGetCourseByIdQuery } from "../services/courses";
 
 export default function CourseItemPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { courseData, status } = useSelector(selectCurrentCourse);
+  const {
+    data: courseData,
+    isSuccess,
+    error,
+  } = useGetCourseByIdQuery(courseId);
 
-  useEffect(() => {
-    dispatch(fetchCourseById(courseId));
-  }, [courseId, dispatch]);
-
-  if (status === STATUS.REJECTED) return <ErrorPage />;
+  if (error) return <ErrorPage />;
 
   return (
     <div>
@@ -31,7 +25,7 @@ export default function CourseItemPage() {
       >
         Go back
       </button>
-      {status === STATUS.FULFILLED && <CourseDetails courseData={courseData} />}
+      {isSuccess && <CourseDetails courseData={courseData} />}
     </div>
   );
 }

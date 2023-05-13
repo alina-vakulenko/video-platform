@@ -1,5 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useMemo } from "react";
 
 import CoursePreview from "../components/CoursePreview";
 import CoursePreviewSkeleton from "../components/CoursePreviewSkeleton";
@@ -7,39 +6,35 @@ import Pagination from "../components/Pagination";
 import ErrorPage from "./ErrorPage";
 import Search from "../components/Search";
 
-import { fetchCourses } from "../features/courses/fetchCourses";
-import { selectCourses } from "../features/courses/coursesSlice";
+import { useGetCoursesQuery } from "../services/courses";
 import { usePagination } from "../hooks/usePagination";
-import { STATUS } from "../utils/fetchStatus";
 
 export default function CoursesListPage() {
-  const dispatch = useDispatch();
-  const { items, status } = useSelector(selectCourses);
-
+  const { data, isLoading, error } = useGetCoursesQuery();
   const [searchValue, setSearchValue] = useState("");
 
-  const searchedItems = useMemo(() => {
-    if (searchValue) {
-      return items.filter((item) =>
-        item.title.toLowerCase().includes(searchValue.toLowerCase())
+  const searchedCourses = useMemo(() => {
+    const courses = data?.courses;
+    if (searchValue && courses) {
+      return data.courses.filter((course) =>
+        course.title.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
-    return items;
-  }, [searchValue, items]);
+    return courses;
+  }, [searchValue, data]);
 
   const pagination = usePagination({
     itemsPerPage: 10,
-    totalItems: searchedItems.length,
+    totalItems: searchedCourses?.length,
   });
 
   const { firstContentIndex, lastContentIndex } = pagination;
-  const courses = searchedItems.slice(firstContentIndex, lastContentIndex);
+  const paginatedCourses = useMemo(
+    () => searchedCourses?.slice(firstContentIndex, lastContentIndex),
+    [searchedCourses, firstContentIndex, lastContentIndex]
+  );
 
-  useEffect(() => {
-    dispatch(fetchCourses());
-  }, [dispatch]);
-
-  if (status === STATUS.REJECTED) return <ErrorPage />;
+  if (error) return <ErrorPage />;
 
   return (
     <div className="content">
@@ -51,11 +46,13 @@ export default function CoursesListPage() {
           </div>
         </div>
         <div className="courses-cards">
-          {status === STATUS.PENDING
+          {isLoading
             ? [...Array(10)].map((_, index) => (
                 <CoursePreviewSkeleton key={index} />
               ))
-            : courses.map((item) => <CoursePreview key={item.id} {...item} />)}
+            : paginatedCourses.map((item) => (
+                <CoursePreview key={item.id} {...item} />
+              ))}
         </div>
       </section>
       <Pagination {...pagination} />
