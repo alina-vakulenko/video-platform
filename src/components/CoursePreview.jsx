@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import VideoPlayer from "./VideoPlayer";
@@ -22,8 +21,6 @@ export default function CoursePreview({
           <VideoPlayer
             videoUrl={meta.courseVideoPreview.link}
             poster={`${previewImageLink}/cover.webp`}
-            onMouseOver={(e) => e.currentTarget.play()}
-            onMouseOut={(e) => e.currentTarget.pause()}
             muted
             className="card-img"
           />

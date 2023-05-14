@@ -1,35 +1,31 @@
-import React, { useEffect, useRef } from "react";
-import Hls from "hls.js";
+import { useRef } from "react";
 
-export default function VideoPlayer({ videoUrl, ...other }) {
-  const playerRef = useRef();
+import useHls from "../hooks/useHls";
+import usePlayOnHover from "../hooks/usePlayOnHover";
 
-  useEffect(() => {
-    const video = playerRef.current;
+import playIcon from "../assets/play-btn.svg";
 
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = videoUrl;
-    } else if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoUrl);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        if (data.fatal) {
-          switch (data.type) {
-            case Hls.ErrorTypes.NETWORK_ERROR:
-              hls.startLoad();
-              break;
-            case Hls.ErrorTypes.MEDIA_ERROR:
-              hls.recoverMediaError();
-              break;
-            default:
-              hls.destroy();
-              break;
-          }
-        }
-      });
-    }
-  }, [videoUrl]);
+export default function VideoPlayer({ videoUrl, poster, ...other }) {
+  const playerRef = useRef(null);
 
-  return <video ref={playerRef} {...other} />;
+  useHls({ videoUrl, playerRef });
+  const [handleLoadMetadata, handleMouseEnter, handleMouseLeave, paused] =
+    usePlayOnHover(playerRef);
+
+  return (
+    <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <video
+        ref={playerRef}
+        poster={poster}
+        onLoadedMetadata={handleLoadMetadata}
+        {...other}
+      />
+      {paused && (
+        <img src={playIcon} alt="contains video" className="play-icon" />
+      )}
+      {paused && !!poster && (
+        <img src={poster} alt="Lesson cover" className="card-img" />
+      )}
+    </div>
+  );
 }
