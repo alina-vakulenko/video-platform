@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const usePlayOnHover = (playerRef) => {
+export const usePlayOnHover = (playerRef) => {
   const [loaded, setLoaded] = useState(false);
   const [paused, setPaused] = useState(true);
 
@@ -26,5 +26,3 @@ const usePlayOnHover = (playerRef) => {
 
   return [handleLoadMetadata, handleMouseEnter, handleMouseLeave, paused];
 };
-
-export default usePlayOnHover;

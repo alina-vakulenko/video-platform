@@ -1,21 +1,21 @@
 import { useRef } from "react";
 
-import useHls from "../hooks/useHls";
-import usePlayOnHover from "../hooks/usePlayOnHover";
+import { useHls } from "../hooks/useHls";
+import { usePlayOnHover } from "../hooks/usePlayOnHover";
 
 import playIcon from "../assets/play-btn.svg";
 
 export default function VideoPlayer({ videoUrl, poster, ...other }) {
-  const playerRef = useRef(null);
+  const videoRef = useRef(null);
 
-  useHls({ videoUrl, playerRef });
+  useHls({ videoUrl, videoRef });
   const [handleLoadMetadata, handleMouseEnter, handleMouseLeave, paused] =
-    usePlayOnHover(playerRef);
+    usePlayOnHover(videoRef);
 
   return (
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <video
-        ref={playerRef}
+        ref={videoRef}
         poster={poster}
         onLoadedMetadata={handleLoadMetadata}
         {...other}

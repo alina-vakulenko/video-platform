@@ -1,8 +1,11 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import debounce from "lodash.debounce";
+import { useSearchParams } from "react-router-dom";
 
 export default function Search({ setSearchValue }) {
-  const [inputValue, setInputValue] = useState("");
+  const [searchParams] = useSearchParams();
+  const initialInputValue = searchParams.get("q") || "";
+  const [inputValue, setInputValue] = useState(initialInputValue);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateSearchValue = useCallback(
@@ -13,8 +16,9 @@ export default function Search({ setSearchValue }) {
   );
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-    updateSearchValue(e.target.value);
+    const value = e.target.value;
+    setInputValue(value);
+    updateSearchValue(value);
   };
 
   return (

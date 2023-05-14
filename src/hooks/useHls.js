@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import Hls from "hls.js";
 
-const useHls = ({ videoUrl, playerRef }) => {
+export const useHls = ({ videoUrl, videoRef }) => {
   useEffect(() => {
-    const video = playerRef.current;
+    const video = videoRef.current;
 
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = videoUrl;
@@ -30,5 +30,3 @@ const useHls = ({ videoUrl, playerRef }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoUrl]);
 };
-
-export default useHls;

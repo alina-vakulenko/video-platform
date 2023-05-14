@@ -1,6 +1,3 @@
-import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-
 import CoursePreview from "../components/CoursePreview";
 import CoursePreviewSkeleton from "../components/CoursePreviewSkeleton";
 import Pagination from "../components/Pagination";
@@ -8,43 +5,18 @@ import ErrorPage from "./ErrorPage";
 import Search from "../components/Search";
 
 import { useGetCoursesQuery } from "../services/courses";
-import { usePagination } from "../hooks/usePagination";
+import { useFilter } from "../hooks/useFilter";
 
 const LIMIT = 10;
 
 export default function CoursesListPage() {
   const { data, isLoading, error } = useGetCoursesQuery();
-  const [searchParams] = useSearchParams();
-  const [searchValue, setSearchValue] = useState("");
-  const searchParamsPage = +Object.fromEntries(searchParams.entries())?.page;
-
-  useEffect(() => {
-    setPage(searchParamsPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParamsPage]);
-
-  const searchedCourses = useMemo(() => {
-    const courses = data?.courses;
-    if (searchValue && courses) {
-      return data.courses.filter((course) =>
-        course.title.toLowerCase().includes(searchValue.toLowerCase())
-      );
-    }
-    return courses;
-  }, [searchValue, data]);
-
-  const pagination = usePagination({
+  const [courses, setSearchValue, paginationProps] = useFilter(data?.courses, {
     limit: LIMIT,
-    totalItems: searchedCourses?.length,
+    searchBy: "title",
   });
 
-  const { firstIndex, lastIndex, setPage, ...paginationProps } = pagination;
-  const paginatedCourses = useMemo(
-    () => searchedCourses?.slice(firstIndex, lastIndex),
-    [searchedCourses, firstIndex, lastIndex]
-  );
-
-  if (error) return <ErrorPage />;
+  if (error) return <ErrorPage message={error.message} />;
 
   return (
     <div className="content">
@@ -60,9 +32,7 @@ export default function CoursesListPage() {
             ? [...Array(10)].map((_, index) => (
                 <CoursePreviewSkeleton key={index} />
               ))
-            : paginatedCourses.map((item) => (
-                <CoursePreview key={item.id} {...item} />
-              ))}
+            : courses.map((item) => <CoursePreview key={item.id} {...item} />)}
         </div>
       </section>
       <Pagination {...paginationProps} />

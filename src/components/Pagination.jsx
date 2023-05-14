@@ -1,10 +1,7 @@
-import React from "react";
-
 import { getPagesArray } from "../utils/getPagesArray";
 
 const Pagination = (params) => {
   const { page, totalPages, onClickPage, onClickNext, onClickPrev } = params;
-
   const pagesArray = getPagesArray(totalPages);
 
   return (
