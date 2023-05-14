@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Hls from "hls.js";
 
 import { controlVideoSpeed } from "../utils/controlVideoSpeed";

@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import CoursePreview from "../components/CoursePreview";
 import CoursePreviewSkeleton from "../components/CoursePreviewSkeleton";
@@ -9,9 +10,18 @@ import Search from "../components/Search";
 import { useGetCoursesQuery } from "../services/courses";
 import { usePagination } from "../hooks/usePagination";
 
+const LIMIT = 10;
+
 export default function CoursesListPage() {
   const { data, isLoading, error } = useGetCoursesQuery();
+  const [searchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
+  const searchParamsPage = +Object.fromEntries(searchParams.entries())?.page;
+
+  useEffect(() => {
+    setPage(searchParamsPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParamsPage]);
 
   const searchedCourses = useMemo(() => {
     const courses = data?.courses;
@@ -24,14 +34,14 @@ export default function CoursesListPage() {
   }, [searchValue, data]);
 
   const pagination = usePagination({
-    itemsPerPage: 10,
+    limit: LIMIT,
     totalItems: searchedCourses?.length,
   });
 
-  const { firstContentIndex, lastContentIndex } = pagination;
+  const { firstIndex, lastIndex, setPage, ...paginationProps } = pagination;
   const paginatedCourses = useMemo(
-    () => searchedCourses?.slice(firstContentIndex, lastContentIndex),
-    [searchedCourses, firstContentIndex, lastContentIndex]
+    () => searchedCourses?.slice(firstIndex, lastIndex),
+    [searchedCourses, firstIndex, lastIndex]
   );
 
   if (error) return <ErrorPage />;
@@ -55,7 +65,7 @@ export default function CoursesListPage() {
               ))}
         </div>
       </section>
-      <Pagination {...pagination} />
+      <Pagination {...paginationProps} />
     </div>
   );
 }

@@ -16,7 +16,6 @@ const Pagination = (params) => {
         >
           <button
             className="page-link"
-            href="#"
             tabIndex={page === 1 ? -1 : 0}
             aria-label="Previous"
             aria-disabled={page === 1}
@@ -41,7 +40,6 @@ const Pagination = (params) => {
         >
           <button
             className="page-link"
-            href="#"
             tabIndex={page === totalPages ? -1 : 0}
             aria-label="Next"
             aria-disabled={page === totalPages}

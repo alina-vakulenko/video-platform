@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
-export const usePagination = ({ itemsPerPage, totalItems }) => {
-  const [page, setPage] = useState(1);
+export const usePagination = ({ limit, totalItems }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const params = Object.fromEntries(searchParams.entries());
+  const urlPage = +params.page;
+  const [page, setPage] = useState(urlPage || 1);
 
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  useEffect(() => {
+    setSearchParams({ ...params, page: page });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
-  const lastContentIndex = page * itemsPerPage;
-  const firstContentIndex = lastContentIndex - itemsPerPage;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  const lastIndex = page * limit;
+  const firstIndex = lastIndex - limit;
 
   const onClickNext = () => {
     if (page < totalPages) {
@@ -28,9 +37,10 @@ export const usePagination = ({ itemsPerPage, totalItems }) => {
 
   return {
     page,
+    setPage,
     totalPages,
-    firstContentIndex,
-    lastContentIndex,
+    firstIndex,
+    lastIndex,
     onClickNext,
     onClickPrev,
     onClickPage,
