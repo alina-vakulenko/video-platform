@@ -4,18 +4,12 @@ import LockedLesson from "./LockedLesson";
 import FloatingVideo from "./FloatingVideo";
 
 export default function CurrentLesson({ lesson, courseId }) {
-  const { status, title, type, order, previewImageLink, link, duration } =
-    lesson;
+  const { id, status, title, type, order, previewImageLink, link } = lesson;
 
-  const savedLessonPosition =
-    JSON.parse(localStorage.getItem(lesson.id))?.currentPosition || -1;
-
+  // Save current lesson to localStorage as last viewed video from the course
   useEffect(() => {
-    localStorage.setItem(
-      courseId,
-      JSON.stringify({ lessonId: lesson.id, title: lesson.title })
-    );
-  }, [lesson, courseId]);
+    localStorage.setItem(`lastViewed:${courseId}`, id);
+  }, [id, courseId]);
 
   if (status === "locked") {
     return <LockedLesson />;
@@ -24,12 +18,7 @@ export default function CurrentLesson({ lesson, courseId }) {
   return (
     <>
       {type === "video" ? (
-        <FloatingVideo
-          videoUrl={link}
-          duration={duration}
-          startPosition={savedLessonPosition}
-          lessonId={lesson.id}
-        />
+        <FloatingVideo videoUrl={link} />
       ) : (
         <img src={`${previewImageLink}/lesson-${order}.webp`} alt={title} />
       )}

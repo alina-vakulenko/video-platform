@@ -10,7 +10,7 @@ class LocalStorageService {
   static getData(key) {
     try {
       const data = localStorage.getItem(key);
-      return data === null ? undefined : JSON.parse(data);
+      return data ? JSON.parse(data) : undefined;
     } catch (error) {
       console.error("Get data error: ", error.message);
     }

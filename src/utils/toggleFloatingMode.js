@@ -1,17 +1,19 @@
-export const toggleFloatingMode = async (event, videoElement, setError) => {
+import { toast } from "react-toastify";
+
+export const toggleFloatingMode = async (event, videoRef) => {
   const toggleButton = event.target;
 
   toggleButton.disabled = true;
+
   try {
-    if (videoElement !== document.pictureInPictureElement) {
-      await videoElement.requestPictureInPicture();
-      toggleButton.textContent = "Turn off";
+    if (videoRef.current !== document.pictureInPictureElement) {
+      const video = videoRef.current;
+      await video.requestPictureInPicture();
     } else {
       await document.exitPictureInPicture();
-      toggleButton.textContent = "Turn on";
     }
   } catch (error) {
-    setError(error.message);
+    toast.error(error.message);
   } finally {
     toggleButton.disabled = false;
   }

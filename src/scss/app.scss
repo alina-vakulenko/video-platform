@@ -84,6 +84,25 @@
           border-radius: 5px;
           object-fit: cover;
         }
+        .badge {
+          background-color: #4daca0;
+          color: #513dcf;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px;
+          margin: 3px;
+
+          &_pip {
+            cursor: pointer;
+          }
+
+          &:hover {
+            background-color: #8cd4cb;
+          }
+        }
 
         h3 {
           color: #333;

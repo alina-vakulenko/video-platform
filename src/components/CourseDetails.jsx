@@ -7,7 +7,7 @@ import { formatIsoDate } from "../utils/handleDate";
 
 export default function CourseDetails({ courseData }) {
   const savedLessonId =
-    JSON.parse(localStorage.getItem(courseData.id))?.lessonId ||
+    localStorage.getItem(`lastViewed:${courseData.id}`) ||
     courseData.lessons[0].id;
 
   const [activeLessonId, setActiveLessonId] = useState(savedLessonId);
