@@ -4,6 +4,26 @@
   box-sizing: border-box;
 }
 
+$theme-colors: (
+  "primary": #513dcf,
+);
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 .content {
   margin: 50px auto;
 
@@ -14,10 +34,16 @@
     row-gap: 50px;
     margin-bottom: 50px;
 
+    .card {
+      border: 0.5px solid lightgray;
+      box-shadow: 3px 3px 15px lightgray;
+    }
+
     .card-img-wrapper {
       width: 100%;
       height: 250px;
       position: relative;
+      margin-bottom: 20px;
 
       .card-img {
         position: absolute;
@@ -35,9 +61,24 @@
         position: absolute;
         top: 10px;
         right: 10px;
+        color: #eb8976;
+        animation: heartbeat 1.5s infinite;
+        z-index: 2;
+      }
+
+      .tag {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        transform: translateY(50%);
+        background-color: #513dcf;
+        border: 1px solid #513dcf;
+        color: #fff;
+        padding: 5px 15px;
         z-index: 2;
       }
     }
+
     ul {
       list-style: none;
       margin: 0;
@@ -84,7 +125,7 @@
           border-radius: 5px;
           object-fit: cover;
         }
-        .badge {
+        .badgeCustom {
           background-color: #4daca0;
           color: #513dcf;
           width: 30px;
@@ -169,12 +210,22 @@
           margin-bottom: 0;
         }
 
+        .lesson-duration {
+          position: absolute;
+          bottom: 4px;
+          right: 4px;
+          font-size: 12px;
+          opacity: 50%;
+          margin: 0;
+        }
+
         span {
           position: absolute;
           top: 4px;
           right: 4px;
           font-size: 14px;
         }
+
         h4 {
           color: #333;
           margin: 0;

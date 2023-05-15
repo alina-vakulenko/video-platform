@@ -22,9 +22,13 @@ export default function CourseDetails({ courseData }) {
       <div className="about mt-4">
         <h6>{courseData.description}</h6>
 
-        <ul className="list-unstyled text-muted mt-3">
+        <ul className="list-unstyled mt-3">
           {courseData.tags?.map((tag) => (
-            <li key={tag}>#{tag}</li>
+            <li key={tag}>
+              <a href="#" className="badge badge-primary">
+                {tag}
+              </a>
+            </li>
           ))}
         </ul>
       </div>

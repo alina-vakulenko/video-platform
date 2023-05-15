@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useHls } from "../hooks/useHls";
 import { usePlayOnHover } from "../hooks/usePlayOnHover";
 
-import playIcon from "../assets/play-btn.svg";
+import { FaPlayCircle } from "react-icons/fa";
 
 export default function VideoPlayer({ videoUrl, poster, ...other }) {
   const videoRef = useRef(null);
@@ -20,9 +20,7 @@ export default function VideoPlayer({ videoUrl, poster, ...other }) {
         onLoadedMetadata={handleLoadMetadata}
         {...other}
       />
-      {paused && (
-        <img src={playIcon} alt="contains video" className="play-icon" />
-      )}
+      {paused && <FaPlayCircle className="play-icon" />}
       {paused && !!poster && (
         <img src={poster} alt="Lesson cover" className="card-img" />
       )}

@@ -34,7 +34,7 @@ export default function FloatingVideo({ videoUrl }) {
         </p>
         <div className="d-flex align-items-center justify-content-end">
           {muted && (
-            <span className="badge" title="muted">
+            <span className="badgeCustom" title="muted">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -48,12 +48,12 @@ export default function FloatingVideo({ videoUrl }) {
             </span>
           )}
           {playbackRate !== 1 && (
-            <span className="badge" title="playback rate">
+            <span className="badgeCustom" title="playback rate">
               {playbackRate}
             </span>
           )}
           <span
-            className="badge badge_pip"
+            className="badgeCustom badge_pip"
             title="picture-in-picture mode"
             onClick={(event) => toggleFloatingMode(event, videoRef)}
           >

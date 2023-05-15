@@ -1,3 +1,5 @@
+import { formatVideoDuration } from "../utils/handleVideoDuration";
+
 export default function LessonPreview({ lesson, active, setActive }) {
   return (
     <li
@@ -13,6 +15,7 @@ export default function LessonPreview({ lesson, active, setActive }) {
       <h4>
         {lesson.order}. {lesson.title}
       </h4>
+      <p className="lesson-duration">{formatVideoDuration(lesson.duration)}</p>
       {lesson.status === "locked" ? <span>🔐</span> : null}
     </li>
   );

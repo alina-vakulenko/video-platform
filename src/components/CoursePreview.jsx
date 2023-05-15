@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 import VideoPlayer from "./VideoPlayer";
+import { formatVideoDuration } from "../utils/handleVideoDuration";
+import { FaCheckSquare } from "react-icons/fa";
 
 export default function CoursePreview({
   id,
@@ -9,6 +11,8 @@ export default function CoursePreview({
   rating,
   meta,
   lessonsCount,
+  duration,
+  tags,
 }) {
   const metaContains = (keyToSearch) => {
     return Object.keys(meta).find((key) => key === keyToSearch);
@@ -31,13 +35,15 @@ export default function CoursePreview({
             className="card-img"
           />
         )}
+        <span className="tag">{tags[0]}</span>
       </div>
       <div className="card-body d-flex flex-column">
         <h5 className="card-title mb-3">{title}</h5>
-        <div className="d-flex justify-content-between mb-2">
-          <span className="card-text">📝{lessonsCount} lessons</span>
-          <span className="card-text">⭐Rating: {rating}</span>
-        </div>
+        <span className="card-text">⭐Rating: {rating}</span>
+        <span className="card-text">
+          Program: 📝{lessonsCount} lessons, duration
+          {formatVideoDuration(duration)}
+        </span>
 
         {metaContains("skills") && (
           <div className="card-text mt-3 mb-3">
@@ -45,7 +51,7 @@ export default function CoursePreview({
             <ul className="mt-1">
               {meta.skills.map((skill) => (
                 <li key={skill} className="text-capitalize">
-                  ☑{skill}
+                  <FaCheckSquare /> {skill}
                 </li>
               ))}{" "}
             </ul>
