@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-$theme-colors: (
-  "primary": #513dcf,
-);
-
 @import "node_modules/bootstrap/scss/bootstrap";
 
 @keyframes heartbeat {
@@ -26,6 +22,39 @@ $theme-colors: (
 
 .content {
   margin: 50px auto;
+  .tags-array {
+    display: flex;
+    column-gap: 20px;
+
+    li {
+      list-style: none;
+
+      button {
+        background-color: #eb8976;
+        color: #fff;
+        padding: 5px 15px;
+        border: none;
+        border-radius: 20px;
+        position: relative;
+      }
+
+      &.active button {
+        background-color: #e16046;
+        outline-offset: -3px;
+        outline-style: dashed;
+        outline-width: 1px;
+        outline-color: #fff;
+      }
+
+      .badge {
+        background-color: #fff;
+        color: #e16046;
+        padding: 4px 6px;
+        border-radius: 50%;
+        margin-left: 5px;
+      }
+    }
+  }
 
   .courses-cards {
     display: grid;

@@ -1,46 +1,65 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
+import debounce from "lodash.debounce";
+
+const trimSearchParams = (key, searchParams) => {
+  const params = new URLSearchParams(searchParams);
+  params.delete(key);
+  return params;
+};
 
 export const useFilter = (array, { limit, searchBy }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const params = Object.fromEntries([...searchParams]);
-  const initialSearchValue = params.q || "";
-  const initialPage = +params.page || 1;
-  const [page, setPage] = useState(initialPage);
+
+  const initialSearchValue = searchParams.get("q") || "";
+  const initialTags = searchParams.getAll("tags") || [];
+  const initialPage = parseInt(searchParams.get("page")) || 1;
+
   const [searchValue, setSearchValue] = useState(initialSearchValue);
+  const [selectedTags, setSelectedTags] = useState(initialTags);
+  const [page, setPage] = useState(initialPage);
 
-  const firstLoad = useRef(false);
+  const notFirstLoad = useRef(false);
 
+  // change search params every time search value changes
   useEffect(() => {
-    const removeSearchKey = (key) => {
-      const param = searchParams.get(key);
-      if (param) {
-        searchParams.delete(key);
-        setSearchParams(searchParams);
-      }
-    };
-
-    if (firstLoad.current) {
+    if (notFirstLoad.current) {
       if (searchValue) {
-        setSearchParams({ q: searchValue });
-        setPage(1);
+        setSearchParams({ ...searchParams, q: searchValue });
       } else {
-        removeSearchKey("q");
+        setSearchParams(trimSearchParams("q", searchParams));
       }
     }
-    firstLoad.current = true;
+    notFirstLoad.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
+  // change search params every time page changes
   useEffect(() => {
-    if (firstLoad.current) {
-      setSearchParams({ ...params, page: page });
+    if (notFirstLoad.current) {
+      setSearchParams({ ...searchParams, page: page });
     }
-    firstLoad.current = true;
+    notFirstLoad.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const filteredArray = useMemo(() => {
+  // change search params every time tags array changes
+  useEffect(() => {
+    if (notFirstLoad.current) {
+      if (selectedTags.length) {
+        const params = new URLSearchParams(searchParams);
+        params.delete("tags");
+        selectedTags.forEach((tag) => params.append("tags", tag));
+        setSearchParams(params);
+      } else {
+        setSearchParams(trimSearchParams("tags", searchParams));
+      }
+    }
+    notFirstLoad.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTags]);
+
+  const searchedCourses = useMemo(() => {
     if (searchValue && array?.length) {
       return array.filter((course) => {
         return course[searchBy]
@@ -51,16 +70,48 @@ export const useFilter = (array, { limit, searchBy }) => {
     return array;
   }, [array, searchValue, searchBy]);
 
+  const filteredSearchedCourses = useMemo(() => {
+    if (selectedTags.length && searchedCourses?.length) {
+      return searchedCourses.filter((course) => {
+        return course.tags.some((tag) => selectedTags.includes(tag));
+      });
+    }
+    return searchedCourses;
+  }, [selectedTags, searchedCourses]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const searchWithDebounce = useCallback(
+    debounce((value) => {
+      setSearchValue(value);
+      setPage(1);
+    }, 1000),
+    []
+  );
+
+  const handleTagsSelection = (e) => {
+    const target = e.target.childNodes[0];
+    const tagName = target.textContent.toLowerCase();
+    console.log(tagName);
+    if (tagName === "all") {
+      setSelectedTags([]);
+    } else if (selectedTags.includes(tagName)) {
+      setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
+    } else {
+      setSelectedTags([...selectedTags, tagName]);
+    }
+    setPage(1);
+  };
+
   const lastIndex = page * limit;
   const firstIndex = lastIndex - limit;
 
-  const paginatedCourses = useMemo(
-    () => filteredArray?.slice(firstIndex, lastIndex),
-    [filteredArray, firstIndex, lastIndex]
+  const paginatedFilteredCourses = useMemo(
+    () => filteredSearchedCourses?.slice(firstIndex, lastIndex),
+    [filteredSearchedCourses, firstIndex, lastIndex]
   );
 
   const paginationProps = {
-    totalPages: Math.ceil(filteredArray?.length / limit),
+    totalPages: Math.ceil(filteredSearchedCourses?.length / limit),
     page,
     onClickNext() {
       setPage((prev) => prev + 1);
@@ -73,5 +124,11 @@ export const useFilter = (array, { limit, searchBy }) => {
     },
   };
 
-  return [paginatedCourses, setSearchValue, paginationProps];
+  return [
+    paginatedFilteredCourses,
+    paginationProps,
+    searchWithDebounce,
+    handleTagsSelection,
+    selectedTags,
+  ];
 };
