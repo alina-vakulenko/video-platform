@@ -25,9 +25,9 @@ export default function CourseDetails({ courseData }) {
         <ul className="list-unstyled mt-3">
           {courseData.tags?.map((tag) => (
             <li key={tag}>
-              <a href="#" className="badge badge-primary">
-                {tag}
-              </a>
+              {/* <a href="#" className="badge badge-primary"> */}
+              {tag}
+              {/* </a> */}
             </li>
           ))}
         </ul>
