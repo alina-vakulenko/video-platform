@@ -4,28 +4,15 @@ import CoursePreviewSkeleton from "../components/CoursePreviewSkeleton";
 import ErrorPage from "./ErrorPage";
 
 import { useGetCoursesQuery } from "../services/courses";
+import { useSavedCoursesContext } from "../context/SavedCoursesContext";
 
-const courseLocalStoragePrefix = "lastViewd:";
 const LIMIT = 10;
 
 const MyCoursesPage = () => {
-  const [savedCourseIds, setSavedCourseIds] = useState([]);
+  const { savedCourseIds } = useSavedCoursesContext();
+
   const [myCourses, setMyCourses] = useState([]);
-
   const { data, isLoading, error } = useGetCoursesQuery();
-
-  useEffect(() => {
-    const getMyCoursesIds = () => {
-      const lsKeys = Object.keys(localStorage);
-      return lsKeys
-        .filter((item) => item.startsWith("lastViewed"))
-        .map((filteredItem) =>
-          filteredItem.slice(courseLocalStoragePrefix.length + 1)
-        );
-    };
-
-    setSavedCourseIds(getMyCoursesIds());
-  }, []);
 
   useEffect(() => {
     if (data?.courses?.length) {

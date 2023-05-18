@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 
 import VideoPlayer from "./VideoPlayer";
+import { useSavedCoursesContext } from "../context/SavedCoursesContext";
 import { formatVideoDuration } from "../utils/handleVideoDuration";
-import { FaCheckSquare, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaCheckSquare, FaStar, FaClipboardList } from "react-icons/fa";
 
 export default function CoursePreview({
   id,
@@ -18,6 +19,12 @@ export default function CoursePreview({
     return Object.keys(meta).find((key) => key === keyToSearch);
   };
 
+  const saveNewCourse = () => {
+    if (!savedCourseIds.includes(id)) {
+      setSavedCourseIds([...savedCourseIds, id]);
+    }
+  };
+  const { savedCourseIds, setSavedCourseIds } = useSavedCoursesContext();
   return (
     <article className="card w-100">
       <div className="card-img-wrapper">
@@ -39,12 +46,14 @@ export default function CoursePreview({
       </div>
       <div className="card-body d-flex flex-column">
         <h5 className="card-title mb-3">{title}</h5>
-        <span className="card-text">⭐Rating: {rating}</span>
         <span className="card-text">
-          Program: 📝{lessonsCount} lessons, duration
+          {<FaStar />}Rating: {rating}
+        </span>
+        <span className="card-text">
+          <FaClipboardList />
+          Program: {lessonsCount} lessons, duration{" "}
           {formatVideoDuration(duration)}
         </span>
-
         {metaContains("skills") && (
           <div className="card-text mt-3 mb-3">
             <strong>Skills you will work on:</strong>
@@ -58,8 +67,12 @@ export default function CoursePreview({
           </div>
         )}
         <div className="card-link d-block mt-auto ms-auto">
-          <Link to={`courses/${id}`} className="btn btn-primary">
-            Go to the course
+          <Link
+            to={`/courses/${id}`}
+            className="btn btn-primary"
+            onClick={saveNewCourse}
+          >
+            {savedCourseIds?.includes(id) ? "Continue course" : "Start course"}
           </Link>
         </div>
       </div>
