@@ -83,7 +83,11 @@ export default function CoursesListPage() {
     <div className="content">
       <section>
         <div className="row align-items-center mb-5">
-          <h1 className="col-12 col-md-8">Find your next course</h1>
+          <h1 className="col-12 col-md-8">
+            {paginatedCourses?.length
+              ? "Find your next course"
+              : "No courses found"}
+          </h1>
           <div className="col-12 col-md-4">
             <Search searchWithDebounce={searchWithDebounce} />
           </div>
@@ -105,7 +109,7 @@ export default function CoursesListPage() {
           </div>
         </div>
         <div className="courses-cards">
-          {paginatedCourses.map((item) => (
+          {paginatedCourses?.map((item) => (
             <CoursePreview key={item.id} {...item} />
           ))}
         </div>

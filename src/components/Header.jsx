@@ -21,8 +21,8 @@ export default function Header() {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <NavLink className="nav-link" to="/">
-                Courses
+              <NavLink className="nav-link" to="my-courses">
+                My Courses
               </NavLink>
             </li>
           </ul>

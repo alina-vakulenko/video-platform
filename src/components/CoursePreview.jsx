@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import VideoPlayer from "./VideoPlayer";
 import { formatVideoDuration } from "../utils/handleVideoDuration";
-import { FaCheckSquare } from "react-icons/fa";
+import { FaCheckSquare, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 export default function CoursePreview({
   id,
