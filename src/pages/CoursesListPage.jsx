@@ -13,15 +13,16 @@ const LIMIT = 10;
 
 export default function CoursesListPage() {
   const { data, isLoading, error } = useGetCoursesQuery();
-  const [tags, setTags] = useState(null);
+  const [tags, setTags] = useState([]);
 
-  const [
-    courses,
+  const {
+    searchedCourses,
+    paginatedCourses,
     paginationProps,
     searchWithDebounce,
     handleTagsSelection,
     selectedTags,
-  ] = useFilter(data?.courses, {
+  } = useFilter(data?.courses, {
     limit: LIMIT,
     searchBy: "title",
   });
@@ -43,24 +44,21 @@ export default function CoursesListPage() {
           }
         }
       });
-      counts.set("all", data.courses.length);
+      if (counts.size > 1) {
+        counts.set("all", objects.length);
+      }
       return Array.from(counts);
     };
 
-    if (data?.courses?.length) {
-      // const uniqueTags = [
-      //   ...new Set(
-      //     ["all"].concat(...data.courses.map((course) => course.tags))
-      //   ),
-      // ];
+    if (searchedCourses?.length) {
       const uniqueTagsWithCount = getUniqueAttribValuesWithCount(
-        data.courses,
+        searchedCourses,
         "tags"
       );
 
       setTags(uniqueTagsWithCount);
     }
-  }, [data]);
+  }, [searchedCourses]);
 
   const isTagActive = (tagName, selectedTags) => {
     const tag = tagName.toLowerCase();
@@ -97,7 +95,9 @@ export default function CoursesListPage() {
                 <li key={tag} className={isTagActive(tag, selectedTags)}>
                   <button onClick={handleTagsSelection}>
                     {tag.toUpperCase()[0].concat(tag.slice(1).toLowerCase())}
-                    <span className="badge">{count}</span>
+                    <span className="badge-circle">
+                      <span className="badge-count">{count}</span>
+                    </span>
                   </button>
                 </li>
               ))}
@@ -105,7 +105,7 @@ export default function CoursesListPage() {
           </div>
         </div>
         <div className="courses-cards">
-          {courses.map((item) => (
+          {paginatedCourses.map((item) => (
             <CoursePreview key={item.id} {...item} />
           ))}
         </div>
