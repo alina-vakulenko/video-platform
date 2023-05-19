@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 
-export const useVideoPosition = (videoRef, videoUrl) => {
+export const useVideoPosition = (videoRef, courseSlug, lessonId) => {
   // Load progress for current video from localStorage on mount
   useEffect(() => {
-    const savedProgress = localStorage.getItem(`progress:${videoUrl}`);
+    const savedProgress = localStorage.getItem(`[${courseSlug}]${lessonId}`);
 
     if (savedProgress && videoRef.current) {
       videoRef.current.currentTime = parseFloat(savedProgress);
     }
-  }, [videoUrl, videoRef]);
+  }, [videoRef, courseSlug, lessonId]);
 
   // Save progress to local storage on page unload
   useEffect(() => {
     const handleUnload = () => {
       if (videoRef.current) {
         localStorage.setItem(
-          `progress:${videoUrl}`,
+          `[${courseSlug}]${lessonId}`,
           videoRef.current.currentTime
         );
       }
@@ -30,7 +30,7 @@ export const useVideoPosition = (videoRef, videoUrl) => {
   const handlePause = () => {
     if (videoRef.current) {
       localStorage.setItem(
-        `progress:${videoUrl}`,
+        `[${courseSlug}]${lessonId}`,
         videoRef.current.currentTime
       );
     }
@@ -38,7 +38,12 @@ export const useVideoPosition = (videoRef, videoUrl) => {
 
   // Remove progress for current video from local storage on video end
   const handleEnded = () => {
-    localStorage.removeItem(`progress:${videoUrl}`);
+    if (videoRef.current) {
+      localStorage.setItem(
+        `[${courseSlug}]${lessonId}`,
+        videoRef.current.currentTime
+      );
+    }
   };
 
   return [handlePause, handleEnded];

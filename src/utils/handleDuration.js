@@ -1,4 +1,4 @@
-export const handleVideoDuration = (durationSeconds) => {
+export const handleDuration = (durationSeconds) => {
   const hours = Math.trunc(durationSeconds / 3600);
   const minutes = Math.trunc(durationSeconds / 60) - hours;
   const seconds = durationSeconds - hours * 3600 - minutes * 60;
@@ -6,8 +6,8 @@ export const handleVideoDuration = (durationSeconds) => {
   return [hours, minutes, seconds];
 };
 
-export const formatVideoDuration = (durationSeconds) => {
-  const durationArray = handleVideoDuration(durationSeconds);
+export const formatDuration = (durationSeconds) => {
+  const durationArray = handleDuration(durationSeconds);
 
   let formatedDuration = " ";
   const measures = ["h", "m", "s"];

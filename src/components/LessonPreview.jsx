@@ -1,6 +1,21 @@
-import { formatVideoDuration } from "../utils/handleVideoDuration";
+import { formatDuration } from "../utils/handleDuration";
 
-export default function LessonPreview({ lesson, active, setActive }) {
+export default function LessonPreview({
+  courseSlug,
+  lesson,
+  active,
+  setActive,
+}) {
+  const getProgressRate = () => {
+    const progress = localStorage.getItem(`[${courseSlug}]${lesson.id}`);
+    if (progress && progress > 0 && lesson.duration > 0) {
+      return (parseFloat(progress) / lesson.duration) * 100;
+    }
+    return 0;
+  };
+
+  const progressRate = getProgressRate();
+
   return (
     <li
       onClick={() => setActive(lesson.id)}
@@ -15,7 +30,10 @@ export default function LessonPreview({ lesson, active, setActive }) {
       <h4>
         {lesson.order}. {lesson.title}
       </h4>
-      <p className="lesson-duration">{formatVideoDuration(lesson.duration)}</p>
+      <p className="lesson-progress text-info">
+        {progressRate > 0 && `${progressRate.toFixed(0)}%`}
+      </p>
+      <p className="lesson-duration">{formatDuration(lesson.duration)}</p>
       {lesson.status === "locked" ? <span>🔐</span> : null}
     </li>
   );

@@ -8,6 +8,7 @@ import { useGetCourseByIdQuery } from "../services/courses";
 export default function CourseItemPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
+
   const {
     data: courseData,
     isSuccess,
@@ -20,7 +21,7 @@ export default function CourseItemPage() {
     <div>
       <button
         type="button"
-        className="btn btn-primary mt-4"
+        className="btn btn-info mt-4"
         onClick={() => navigate(-1)}
       >
         Go back

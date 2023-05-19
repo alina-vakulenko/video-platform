@@ -9,7 +9,7 @@ import { useSavedCoursesContext } from "../context/SavedCoursesContext";
 const LIMIT = 10;
 
 const MyCoursesPage = () => {
-  const { savedCourseIds } = useSavedCoursesContext();
+  const { savedCoursesSlugs } = useSavedCoursesContext();
 
   const [myCourses, setMyCourses] = useState([]);
   const { data, isLoading, error } = useGetCoursesQuery();
@@ -17,10 +17,12 @@ const MyCoursesPage = () => {
   useEffect(() => {
     if (data?.courses?.length) {
       setMyCourses(
-        data.courses.filter((course) => savedCourseIds.includes(course.id))
+        data.courses.filter((course) =>
+          savedCoursesSlugs.includes(course.meta.slug)
+        )
       );
     }
-  }, [data, savedCourseIds]);
+  }, [data, savedCoursesSlugs]);
 
   if (error) return <ErrorPage message={error.message} />;
   if (isLoading)

@@ -4,7 +4,6 @@ import Hls from "hls.js";
 export const useHls = ({ videoUrl, videoRef }) => {
   useEffect(() => {
     const video = videoRef.current;
-
     if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = videoUrl;
     } else if (Hls.isSupported()) {

@@ -3,26 +3,28 @@ import { createContext, useContext } from "react";
 
 const SavedCoursesContext = createContext();
 export const useSavedCoursesContext = () => useContext(SavedCoursesContext);
-const courseLocalStoragePrefix = "lastViewd:";
+const localStorageCoursePrefix = "lastViewd:";
 
 export const SavedCoursesProvider = ({ children }) => {
-  const [savedCourseIds, setSavedCourseIds] = useState([]);
+  const [savedCoursesSlugs, setSavedCoursesSlugs] = useState([]);
 
   useEffect(() => {
-    const getMyCoursesIds = () => {
+    const getSavedCoursesSlugs = () => {
       const lsKeys = Object.keys(localStorage);
       return lsKeys
         .filter((item) => item.startsWith("lastViewed"))
         .map((filteredItem) =>
-          filteredItem.slice(courseLocalStoragePrefix.length + 1)
+          filteredItem.slice(localStorageCoursePrefix.length + 1)
         );
     };
 
-    setSavedCourseIds(getMyCoursesIds());
+    setSavedCoursesSlugs(getSavedCoursesSlugs());
   }, []);
 
   return (
-    <SavedCoursesContext.Provider value={{ savedCourseIds, setSavedCourseIds }}>
+    <SavedCoursesContext.Provider
+      value={{ savedCoursesSlugs, setSavedCoursesSlugs }}
+    >
       {children}
     </SavedCoursesContext.Provider>
   );

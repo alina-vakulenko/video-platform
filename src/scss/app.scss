@@ -89,6 +89,16 @@
     .card {
       border: 0.5px solid lightgray;
       box-shadow: 3px 3px 15px lightgray;
+
+      .course-card-btn,
+      .course-card-progress {
+        background-color: #513dcf;
+        color: #fff;
+      }
+      .card-text {
+        display: flex;
+        align-items: center;
+      }
     }
 
     .card-img-wrapper {
@@ -177,16 +187,17 @@
           border-radius: 5px;
           object-fit: cover;
         }
+
         .badgeCustom {
-          background-color: #4daca0;
-          color: #513dcf;
+          color: #fff;
           width: 30px;
           height: 30px;
+          border-radius: 4px;
           display: flex;
           justify-content: center;
           align-items: center;
           padding: 5px;
-          margin: 3px;
+          font-size: 14px;
 
           &_pip {
             cursor: pointer;
@@ -268,6 +279,14 @@
           right: 4px;
           font-size: 12px;
           opacity: 50%;
+          margin: 0;
+        }
+
+        .lesson-progress {
+          position: absolute;
+          top: 4px;
+          right: 4px;
+          font-size: 12px;
           margin: 0;
         }
 
