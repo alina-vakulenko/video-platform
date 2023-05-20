@@ -1,9 +1,9 @@
 import { useRef } from "react";
 
-import { useHls } from "../hooks/useHls";
-import { useVideoSpeedControl } from "../hooks/useVideoSpeedControl";
-import { useVideoPosition } from "../hooks/useVideoPosition";
-import { toggleFloatingMode } from "../utils/toggleFloatingMode";
+import { useHls } from "../../../hooks/useHls";
+import { useVideoSpeedControl } from "../../../hooks/useVideoSpeedControl";
+import { useVideoPosition } from "../../../hooks/useVideoPosition";
+import { toggleFloatingMode } from "../../../utils/toggleFloatingMode";
 
 import { BsPip, BsFillVolumeMuteFill } from "react-icons/bs";
 

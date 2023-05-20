@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import CoursePreview from "../components/CoursePreview";
-import CoursePreviewSkeleton from "../components/CoursePreviewSkeleton";
+
+import CourseCards from "../components/course-preview-list";
+import PlaceholderCards from "../components/course-preview-list/PlaceholderCards";
 import ErrorPage from "./ErrorPage";
 
 import { useGetCoursesQuery } from "../services/courses";
@@ -15,7 +16,7 @@ const MyCoursesPage = () => {
   const { data, isLoading, error } = useGetCoursesQuery();
 
   useEffect(() => {
-    if (data?.courses?.length) {
+    if (data?.courses?.length && savedCoursesSlugs.length) {
       setMyCourses(
         data.courses.filter((course) =>
           savedCoursesSlugs.includes(course.meta.slug)
@@ -25,32 +26,17 @@ const MyCoursesPage = () => {
   }, [data, savedCoursesSlugs]);
 
   if (error) return <ErrorPage message={error.message} />;
-  if (isLoading)
-    return (
-      <div className="courses-cards">
-        {[...Array(LIMIT)].map((_, index) => (
-          <CoursePreviewSkeleton key={index} />
-        ))}
-      </div>
-    );
+  if (isLoading) return <PlaceholderCards quantity={LIMIT} />;
 
   return (
-    <div className="content">
-      <section>
-        <div className="row align-items-center mb-5">
-          <h1 className="col">
-            {myCourses?.length
-              ? "Your courses"
-              : "You haven't started any course yet"}
-          </h1>
-        </div>
-        <div className="courses-cards">
-          {myCourses?.map((item) => (
-            <CoursePreview key={item.id} {...item} />
-          ))}
-        </div>
-      </section>
-    </div>
+    <section className="content">
+      <h1 className="text-center mb-5">
+        {myCourses?.length
+          ? "Your courses"
+          : "You haven't started any course yet"}
+      </h1>
+      <CourseCards cards={myCourses} />
+    </section>
   );
 };
 

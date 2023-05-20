@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 
-import CourseDetails from "../components/CourseDetails";
+import CourseDetails from "../components/course-details";
 import ErrorPage from "./ErrorPage";
 
 import { useGetCourseByIdQuery } from "../services/courses";

@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import LessonPreview from "./LessonPreview";
-import CurrentLesson from "./CurrentLesson";
+import CurrentLesson from "./current-lesson";
 
-import { useCourseProgress } from "../hooks/useCourseProgress";
-import { formatIsoDate } from "../utils/handleDate";
+import { useCourseProgress } from "../../hooks/useCourseProgress";
+import { formatIsoDate } from "../../utils/handleDate";
 import { FcCalendar } from "react-icons/fc";
 
 export default function CourseDetails({ courseData }) {

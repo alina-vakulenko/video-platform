@@ -1,4 +1,4 @@
-import { formatDuration } from "../utils/handleDuration";
+import { formatDuration } from "../../utils/handleDuration";
 
 export default function LessonPreview({
   courseSlug,

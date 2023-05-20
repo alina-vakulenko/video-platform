@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
-import CoursePreview from "../components/CoursePreview";
-import CoursePreviewSkeleton from "../components/CoursePreviewSkeleton";
+import CourseCards from "../components/course-preview-list";
+import PlaceholderCards from "../components/course-preview-list/PlaceholderCards";
+import Tags from "../components/Tags";
 import Pagination from "../components/Pagination";
-import ErrorPage from "./ErrorPage";
 import Search from "../components/Search";
+import ErrorPage from "./ErrorPage";
 
 import { useGetCoursesQuery } from "../services/courses";
 import { useFilter } from "../hooks/useFilter";
@@ -60,61 +61,32 @@ export default function CoursesListPage() {
     }
   }, [searchedCourses]);
 
-  const isTagActive = (tagName, selectedTags) => {
-    const tag = tagName.toLowerCase();
-    return selectedTags.includes(tag)
-      ? "active"
-      : tag === "all" && selectedTags.length === 0
-      ? "active"
-      : "";
-  };
-
   if (error) return <ErrorPage message={error.message} />;
-  if (isLoading)
-    return (
-      <div className="courses-cards">
-        {[...Array(LIMIT)].map((_, index) => (
-          <CoursePreviewSkeleton key={index} />
-        ))}
-      </div>
-    );
+  if (isLoading) return <PlaceholderCards quantity={LIMIT} />;
 
   return (
-    <div className="content">
-      <section>
-        <div className="row align-items-center mb-5">
-          <h1 className="col-12 col-md-8">
-            {paginatedCourses?.length
-              ? "Find your next course"
-              : "No courses found"}
-          </h1>
-          <div className="col-12 col-md-4">
-            <Search searchWithDebounce={searchWithDebounce} />
-          </div>
+    <section className="content">
+      <div className="row align-items-center mb-5">
+        <h1 className="col-12 col-md-8">
+          {paginatedCourses?.length
+            ? "Find your next course"
+            : "No courses found"}
+        </h1>
+        <div className="col-12 col-md-4">
+          <Search searchWithDebounce={searchWithDebounce} />
         </div>
-        <div className="row">
-          <div className="col">
-            <ul className="tags-array">
-              {tags?.map(([tag, count]) => (
-                <li key={tag} className={isTagActive(tag, selectedTags)}>
-                  <button onClick={handleTagsSelection}>
-                    {tag.toUpperCase()[0].concat(tag.slice(1).toLowerCase())}
-                    <span className="badge-circle">
-                      <span className="badge-count">{count}</span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <Tags
+            tags={tags}
+            selectedTags={selectedTags}
+            handleTagsSelection={handleTagsSelection}
+          />
         </div>
-        <div className="courses-cards">
-          {paginatedCourses?.map((item) => (
-            <CoursePreview key={item.id} {...item} />
-          ))}
-        </div>
-      </section>
+      </div>
+      <CourseCards cards={paginatedCourses} />
       <Pagination {...paginationProps} />
-    </div>
+    </section>
   );
 }
