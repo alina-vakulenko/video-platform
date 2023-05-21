@@ -10,6 +10,7 @@ const Pagination = (params) => {
         <li
           className={page === 1 ? "page-item disabled" : "page-item"}
           onClick={() => onClickPrev()}
+          disabled={page === 1}
         >
           <button
             className="page-link"
@@ -32,6 +33,7 @@ const Pagination = (params) => {
           </li>
         ))}
         <li
+          disabled={page === totalPages}
           className={page === totalPages ? "page-item disabled" : "page-item"}
           onClick={() => onClickNext()}
         >

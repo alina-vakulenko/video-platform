@@ -15,7 +15,6 @@ const LIMIT = 10;
 export default function CoursesListPage() {
   const { data, isLoading, error } = useGetCoursesQuery();
   const [tags, setTags] = useState([]);
-
   const {
     searchedCourses,
     paginatedCourses,
@@ -66,7 +65,7 @@ export default function CoursesListPage() {
 
   return (
     <section className="content">
-      <div className="row align-items-center mb-5">
+      <div className="row align-items-center mb-3 md-md-5">
         <h1 className="col-12 col-md-8">
           {paginatedCourses?.length
             ? "Find your next course"

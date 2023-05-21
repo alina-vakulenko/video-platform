@@ -1,11 +1,13 @@
 import { useState } from "react";
 
+import { FcCalendar } from "react-icons/fc";
+
 import LessonPreview from "./LessonPreview";
 import CurrentLesson from "./current-lesson";
+import Progress from "../Progress";
 
 import { useCourseProgress } from "../../hooks/useCourseProgress";
 import { formatIsoDate } from "../../utils/handleDate";
-import { FcCalendar } from "react-icons/fc";
 
 export default function CourseDetails({ courseData }) {
   const lastViewedLessonId =
@@ -26,19 +28,7 @@ export default function CourseDetails({ courseData }) {
   return (
     <section className="content course-content">
       <h1 className="mb-3">{courseData.title}</h1>
-      <div className="progress">
-        <div
-          className="progress-bar bg-info"
-          role="progressbar"
-          style={{ width: `${courseProgress.toFixed(0)}%` }}
-          aria-valuenow={courseProgress.toFixed(0)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        >
-          {`${courseProgress.toFixed(0)}%`}
-        </div>
-      </div>
-
+      <Progress progress={courseProgress} />
       <div className="about mt-4">
         <p className="h4">{courseData.description}</p>
         <p className="d-flex align-items-center">

@@ -14,7 +14,7 @@ const VideoLesson = ({ courseSlug, lessonId, link }) => {
     courseSlug,
     lessonId
   );
-  useHls({ videoUrl: link, videoRef });
+  useHls({ videoUrl: `https://cors-proxy.fringe.zone/${link}`, videoRef });
   const { keyUp, keyDown, playbackRate, muted } =
     useVideoSpeedControl(videoRef);
 
@@ -22,7 +22,6 @@ const VideoLesson = ({ courseSlug, lessonId, link }) => {
     <>
       <video
         ref={videoRef}
-        src={link}
         type="application/x-mpegURL"
         onPause={handlePause}
         onEnded={handleEnded}
@@ -38,17 +37,17 @@ const VideoLesson = ({ courseSlug, lessonId, link }) => {
         </p>
         <div className="d-flex align-items-center justify-content-end gap-1">
           {muted && (
-            <span className="badgeCustom bg-info" title="muted">
+            <span className="badgeCustom" title="muted">
               <BsFillVolumeMuteFill />
             </span>
           )}
           {playbackRate !== 1 && (
-            <span className="badgeCustom bg-info" title="playback rate">
+            <span className="badgeCustom" title="playback rate">
               {playbackRate}
             </span>
           )}
           <span
-            className="badgeCustom bg-info badge_pip"
+            className="badgeCustom badge_pip"
             title="picture-in-picture mode"
             onClick={(event) => toggleFloatingMode(event, videoRef)}
           >

@@ -6,8 +6,6 @@ import MyCoursesPage from "./pages/MyCoursesPage";
 import CourseItemPage from "./pages/CourseItemPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
-import "./scss/app.scss";
-
 function App() {
   return (
     <Routes>

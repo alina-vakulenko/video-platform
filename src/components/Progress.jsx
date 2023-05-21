@@ -1,11 +1,11 @@
 const Progress = ({ progress }) => {
   return (
-    <div className="progress w-50">
+    <div className="progress w-100">
       <div
-        className="progress-bar course-card-progress"
+        className="progress-bar course-progress"
         role="progressbar"
-        style={{ width: `${progress.toFixed(0)}%` }}
-        aria-valuenow={progress.toFixed(0)}
+        style={{ width: `${progress.toFixed(2)}%` }}
+        aria-valuenow={progress.toFixed(2)}
         aria-valuemin={0}
         aria-valuemax={100}
       >

@@ -41,19 +41,23 @@ export default function CoursePreview({
       <div className="card-body d-flex flex-column">
         <h5 className="card-title mb-3">{title}</h5>
         <CoursePreviewDescription {...courseDescriptionProps} />
-        <div className="d-flex justify-content-between align-items-center mt-auto">
-          {courseProgress > 0 && <Progress progress={courseProgress} />}
-          <Link
-            to={`/courses/${id}`}
-            className="btn course-card-btn ms-auto"
-            onClick={saveNewCourse}
-          >
-            {!savedCoursesSlugs?.includes(meta.slug)
-              ? "Start course"
-              : courseProgress > 99.9
-              ? "Course completed"
-              : "Continue course"}
-          </Link>
+        <div className="row mt-auto d-flex align-items-center">
+          <div className="col text-start">
+            {courseProgress > 0 && <Progress progress={courseProgress} />}
+          </div>
+          <div className="col text-end">
+            <Link
+              to={`/courses/${id}`}
+              className="btn course-card-btn"
+              onClick={saveNewCourse}
+            >
+              {!savedCoursesSlugs?.includes(meta.slug)
+                ? "Start course"
+                : courseProgress > 99.9
+                ? "Course completed"
+                : "Continue course"}
+            </Link>
+          </div>
         </div>
       </div>
     </article>

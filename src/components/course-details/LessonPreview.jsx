@@ -30,7 +30,7 @@ export default function LessonPreview({
       <h4>
         {lesson.order}. {lesson.title}
       </h4>
-      <p className="lesson-progress text-info">
+      <p className="lesson-progress">
         {progressRate > 0 && `${progressRate.toFixed(0)}%`}
       </p>
       <p className="lesson-duration">{formatDuration(lesson.duration)}</p>
