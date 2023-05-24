@@ -10,10 +10,10 @@ const Pagination = (params) => {
         <li
           className={page === 1 ? "page-item disabled" : "page-item"}
           onClick={() => onClickPrev()}
-          disabled={page === 1}
         >
           <button
             className="page-link"
+            disabled={page === 1}
             tabIndex={page === 1 ? -1 : 0}
             aria-label="Previous"
             aria-disabled={page === 1}
@@ -33,13 +33,13 @@ const Pagination = (params) => {
           </li>
         ))}
         <li
-          disabled={page === totalPages}
           className={page === totalPages ? "page-item disabled" : "page-item"}
           onClick={() => onClickNext()}
         >
           <button
             className="page-link"
             tabIndex={page === totalPages ? -1 : 0}
+            disabled={page === totalPages}
             aria-label="Next"
             aria-disabled={page === totalPages}
           >

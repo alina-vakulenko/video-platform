@@ -29,10 +29,14 @@ export const usePagination = (items, limit) => {
     page,
     totalPages: Math.ceil(items?.length / limit),
     onClickNext() {
-      setPage((prev) => prev + 1);
+      if (page < items.length / limit) {
+        setPage((prev) => prev + 1);
+      }
     },
     onClickPrev() {
-      setPage((prev) => prev - 1);
+      if (page > 1) {
+        setPage((prev) => prev - 1);
+      }
     },
     onClickPage(p) {
       setPage(p);
